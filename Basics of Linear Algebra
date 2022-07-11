@@ -1,0 +1,87 @@
+
+import tensorflow as tf
+import numpy as np
+import pandas as pd
+import sys
+import matplotlib.pyplot as plt
+
+A=tf.constant([[4,5,3],[2,5,8],[7,4,1]],name="MatrixA",dtype=tf.float32)
+B=tf.constant(2,name="scalar",dtype=tf.float32)
+C=tf.constant([[1,2,3],[9,8,6],[7,4,5]],name="MatrixC",dtype=tf.float32)
+D=tf.constant([[6,5,9],[1,3,7],[2,4,8]],name="matrixD",dtype=tf.float32)
+
+result1=tf.add(A,B,name="result1")
+result2=tf.add(A,C)
+result3=tf.multiply(A,B)
+result4=tf.matmul(A,C)
+result5=tf.transpose(C,name="Transposed")
+result6_LHS=tf.matmul(A,tf.add(C,D))
+result6_RHS=tf.add(tf.matmul(A,C),tf.matmul(A,D))
+predictor=tf.reduce_all(tf.equal(result6_LHS,result6_RHS))
+def true():
+  print("Distributive property satisfied for A,C,D \nLHS: {}\n RHS: {}\n".format(result6_LHS,result6_RHS))
+def false():
+  print("Distributive property not satisfied for A,C,D")
+
+result7=tf.multiply(A,D,name="result7")
+print("Matrix A:{}\n".format(A))
+print("Scalar B:{}\n".format(B))
+print("Matrix C{}\n".format(C))
+print("Matrix D{}\n".format(D))
+print("Addition of a matrix and a scalar: {}\n".format(result1))
+print("Addition of two matrices A and C: {} \n".format(result2))
+print("Multiplication of a scalar to a matrix A: {} \n".format(result3))
+print("Multiplication of two matrices A and C: {}\n".format(result4))
+print("Transpose of matrix C: {}\n".format(result5))
+tf.cond(predictor,true,false)
+print("Hadamard Operation for A and D: {}\n".format(result7))
+
+
+
+
+##result
+Matrix A:[[4. 5. 3.]
+ [2. 5. 8.]
+ [7. 4. 1.]]
+
+Scalar B:2.0
+
+Matrix C[[1. 2. 3.]
+ [9. 8. 6.]
+ [7. 4. 5.]]
+
+Matrix D[[6. 5. 9.]
+ [1. 3. 7.]
+ [2. 4. 8.]]
+
+Addition of a matrix and a scalar: [[ 6.  7.  5.]
+ [ 4.  7. 10.]
+ [ 9.  6.  3.]]
+
+Addition of two matrices A and C: [[ 5.  7.  6.]
+ [11. 13. 14.]
+ [14.  8.  6.]] 
+
+Multiplication of a scalar to a matrix A: [[ 8. 10.  6.]
+ [ 4. 10. 16.]
+ [14.  8.  2.]] 
+
+Multiplication of two matrices A and C: [[ 70.  60.  57.]
+ [103.  76.  76.]
+ [ 50.  50.  50.]]
+
+Transpose of matrix C: [[1. 9. 7.]
+ [2. 8. 4.]
+ [3. 6. 5.]]
+
+Distributive property satisfied for A,C,D 
+LHS: [[105. 107. 152.]
+ [136. 133. 193.]
+ [ 98. 101. 149.]]
+ RHS: [[105. 107. 152.]
+ [136. 133. 193.]
+ [ 98. 101. 149.]]
+
+Hadamard Operation for A and D: [[24. 25. 27.]
+ [ 2. 15. 56.]
+ [14. 16.  8.]]
